@@ -401,7 +401,7 @@ if ( is_blog_admin() && current_user_can( 'edit_posts' ) ) {
 }
 
 $help .= '<p>' . sprintf(
-	/* translators: %s: WordPress Planet URL. */
+	
 	__( '<strong>WordPress Events and News</strong> &mdash; Upcoming events near you as well as the latest news from the official WordPress project and the <a href="%s">WordPress Planet</a>.' ),
 	__( 'https://planet.wordpress.org/' )
 ) . '</p>';
@@ -417,7 +417,7 @@ $screen->add_help_tab(
 unset( $help );
 
 $wp_version = get_bloginfo( 'version', 'display' );
-/* translators: %s: WordPress version. */
+
 $wp_version_text = sprintf( __( 'Version %s' ), $wp_version );
 $is_dev_version  = preg_match( '/alpha|beta|RC/', $wp_version );
 
@@ -512,7 +512,7 @@ if ( has_action( 'welcome_panel' ) && current_user_can( 'edit_theme_options' ) )
 	<?php wp_dashboard(); ?>
 	</div><!-- dashboard-widgets-wrap -->
 
-</div><!-- wrap -->
+</div>
 
 <?php
 wp_print_community_events_templates();
